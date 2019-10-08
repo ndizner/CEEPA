@@ -12,21 +12,13 @@ class Tipo_usuario extends CI_Controller{
     } 
 
     /*
-     * Listing of tipo_usuarios
+     * Listing of tipo_usuario
      */
     function index()
     {
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+        $data['tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario();
         
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('tipo_usuario/index?');
-        $config['total_rows'] = $this->Tipo_usuario_model->get_all_tipo_usuarios_count();
-        $this->pagination->initialize($config);
-
-        $data['tipo_usuarios'] = $this->Tipo_usuario_model->get_all_tipo_usuarios($params);
-        
-        $data['_view'] = 'tipo_usuarios/index';
+        $data['_view'] = 'tipo_usuario/index';
         $this->load->view('layouts/main',$data);
     }
 
@@ -38,6 +30,7 @@ class Tipo_usuario extends CI_Controller{
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
+				'tipo_usuario_estado' => $this->input->post('tipo_usuario_estado'),
 				'descripcion' => $this->input->post('descripcion'),
             );
             
@@ -46,7 +39,7 @@ class Tipo_usuario extends CI_Controller{
         }
         else
         {            
-            $data['_view'] = 'tipo_usuarios/add';
+            $data['_view'] = 'tipo_usuario/add';
             $this->load->view('layouts/main',$data);
         }
     }  
@@ -64,6 +57,7 @@ class Tipo_usuario extends CI_Controller{
             if(isset($_POST) && count($_POST) > 0)     
             {   
                 $params = array(
+					'tipo_usuario_estado' => $this->input->post('tipo_usuario_estado'),
 					'descripcion' => $this->input->post('descripcion'),
                 );
 
@@ -72,7 +66,7 @@ class Tipo_usuario extends CI_Controller{
             }
             else
             {
-                $data['_view'] = 'tipo_usuarios/edit';
+                $data['_view'] = 'tipo_usuario/edit';
                 $this->load->view('layouts/main',$data);
             }
         }

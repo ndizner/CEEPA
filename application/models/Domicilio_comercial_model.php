@@ -20,18 +20,18 @@ class Domicilio_comercial_model extends CI_Model
     }
     
     /*
-     * Get all domicilios_comerciales count
+     * Get all domicilio_comercial count
      */
-    function get_all_domicilios_comerciales_count()
+    function get_all_domicilio_comercial_count()
     {
         $this->db->from('domicilio_comercial');
         return $this->db->count_all_results();
     }
         
     /*
-     * Get all domicilios_comerciales
+     * Get all domicilio_comercial
      */
-    function get_all_domicilios_comerciales($params = array())
+    function get_all_domicilio_comercial($params = array())
     {
         $this->db->order_by('id_domicilio_comer', 'desc');
         if(isset($params) && !empty($params))

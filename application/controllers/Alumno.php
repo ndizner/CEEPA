@@ -26,7 +26,7 @@ class Alumno extends CI_Controller{
 
         $data['alumnos'] = $this->Alumno_model->get_all_alumnos($params);
         
-        $data['_view'] = 'alumnos/index';
+        $data['_view'] = 'alumno/index';
         $this->load->view('layouts/main',$data);
     }
 
@@ -35,13 +35,35 @@ class Alumno extends CI_Controller{
      */
     function add()
     {   
-        if(isset($_POST) && count($_POST) > 0)     
+        $this->load->library('form_validation');
+
+		$this->form_validation->set_rules('email','Email','valid_email');
+		$this->form_validation->set_rules('dni','Dni','max_length[8]');
+		$this->form_validation->set_rules('nombre','Nombre','required|alpha');
+		$this->form_validation->set_rules('apellido','Apellido','required');
+		$this->form_validation->set_rules('edad','Edad','required|integer');
+		$this->form_validation->set_rules('estudios','Estudios','required');
+		$this->form_validation->set_rules('telefono','Telefono','required');
+		$this->form_validation->set_rules('id_carrera','Id Carrera','required');
+		$this->form_validation->set_rules('id_curso','Id Curso','required');
+		$this->form_validation->set_rules('id_localidad','Id Localidad','required');
+		$this->form_validation->set_rules('alumno_estado','Alumno Estado','required');
+		
+		if($this->form_validation->run())     
         {   
             $params = array(
+				'alumno_estado' => $this->input->post('alumno_estado'),
 				'id_carrera' => $this->input->post('id_carrera'),
 				'id_curso' => $this->input->post('id_curso'),
-				'id_estado_usuario' => $this->input->post('id_estado_usuario'),
-				'id_datos_personales' => $this->input->post('id_datos_personales'),
+				'id_localidad' => $this->input->post('id_localidad'),
+				'nombre' => $this->input->post('nombre'),
+				'apellido' => $this->input->post('apellido'),
+				'edad' => $this->input->post('edad'),
+				'dni' => $this->input->post('dni'),
+				'domicilio' => $this->input->post('domicilio'),
+				'estudios' => $this->input->post('estudios'),
+				'email' => $this->input->post('email'),
+				'telefono' => $this->input->post('telefono'),
             );
             
             $alumno_id = $this->Alumno_model->add_alumno($params);
@@ -55,13 +77,10 @@ class Alumno extends CI_Controller{
 			$this->load->model('Curso_model');
 			$data['all_cursos'] = $this->Curso_model->get_all_cursos();
 
-			$this->load->model('Estado_usuario_model');
-			$data['all_estados_usuario'] = $this->Estado_usuario_model->get_all_estados_usuario();
-
-			$this->load->model('Datos_personales_model');
-			$data['all_datos_personales'] = $this->Datos_personales_model->get_all_datos_personales();
+			$this->load->model('Localidades_model');
+			$data['all_localidades'] = $this->Localidades_model->get_all_localidades();
             
-            $data['_view'] = 'alumnos/add';
+            $data['_view'] = 'alumno/add';
             $this->load->view('layouts/main',$data);
         }
     }  
@@ -76,13 +95,35 @@ class Alumno extends CI_Controller{
         
         if(isset($data['alumno']['id_alumnos']))
         {
-            if(isset($_POST) && count($_POST) > 0)     
+            $this->load->library('form_validation');
+
+			$this->form_validation->set_rules('email','Email','valid_email');
+			$this->form_validation->set_rules('dni','Dni','max_length[8]');
+			$this->form_validation->set_rules('nombre','Nombre','required|alpha');
+			$this->form_validation->set_rules('apellido','Apellido','required');
+			$this->form_validation->set_rules('edad','Edad','required|integer');
+			$this->form_validation->set_rules('estudios','Estudios','required');
+			$this->form_validation->set_rules('telefono','Telefono','required');
+			$this->form_validation->set_rules('id_carrera','Id Carrera','required');
+			$this->form_validation->set_rules('id_curso','Id Curso','required');
+			$this->form_validation->set_rules('id_localidad','Id Localidad','required');
+			$this->form_validation->set_rules('alumno_estado','Alumno Estado','required');
+		
+			if($this->form_validation->run())     
             {   
                 $params = array(
+					'alumno_estado' => $this->input->post('alumno_estado'),
 					'id_carrera' => $this->input->post('id_carrera'),
 					'id_curso' => $this->input->post('id_curso'),
-					'id_estado_usuario' => $this->input->post('id_estado_usuario'),
-					'id_datos_personales' => $this->input->post('id_datos_personales'),
+					'id_localidad' => $this->input->post('id_localidad'),
+					'nombre' => $this->input->post('nombre'),
+					'apellido' => $this->input->post('apellido'),
+					'edad' => $this->input->post('edad'),
+					'dni' => $this->input->post('dni'),
+					'domicilio' => $this->input->post('domicilio'),
+					'estudios' => $this->input->post('estudios'),
+					'email' => $this->input->post('email'),
+					'telefono' => $this->input->post('telefono'),
                 );
 
                 $this->Alumno_model->update_alumno($id_alumnos,$params);            
@@ -96,13 +137,10 @@ class Alumno extends CI_Controller{
 				$this->load->model('Curso_model');
 				$data['all_cursos'] = $this->Curso_model->get_all_cursos();
 
-				$this->load->model('Estado_usuario_model');
-				$data['all_estados_usuario'] = $this->Estado_usuario_model->get_all_estados_usuario();
+				$this->load->model('Localidades_model');
+				$data['all_localidades'] = $this->Localidades_model->get_all_localidades();
 
-				$this->load->model('Datos_personales_model');
-				$data['all_datos_personales'] = $this->Datos_personales_model->get_all_datos_personales();
-
-                $data['_view'] = 'alumnos/edit';
+                $data['_view'] = 'alumno/edit';
                 $this->load->view('layouts/main',$data);
             }
         }

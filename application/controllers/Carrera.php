@@ -26,7 +26,7 @@ class Carrera extends CI_Controller{
 
         $data['carreras'] = $this->Carrera_model->get_all_carreras($params);
         
-        $data['_view'] = 'carreras/index';
+        $data['_view'] = 'carrera/index';
         $this->load->view('layouts/main',$data);
     }
 
@@ -35,9 +35,15 @@ class Carrera extends CI_Controller{
      */
     function add()
     {   
-        if(isset($_POST) && count($_POST) > 0)     
+        $this->load->library('form_validation');
+
+		$this->form_validation->set_rules('carrera_estado','Carrera Estado','required');
+		$this->form_validation->set_rules('descripcion','Descripcion','required');
+		
+		if($this->form_validation->run())     
         {   
             $params = array(
+				'carrera_estado' => $this->input->post('carrera_estado'),
 				'descripcion' => $this->input->post('descripcion'),
             );
             
@@ -45,8 +51,9 @@ class Carrera extends CI_Controller{
             redirect('carrera/index');
         }
         else
-        {            
-            $data['_view'] = 'carreras/add';
+        {			$data['all_carreras'] = $this->Carrera_model->get_all_carreras();
+            
+            $data['_view'] = 'carrera/add';
             $this->load->view('layouts/main',$data);
         }
     }  
@@ -61,9 +68,15 @@ class Carrera extends CI_Controller{
         
         if(isset($data['carrera']['id_carrera']))
         {
-            if(isset($_POST) && count($_POST) > 0)     
+            $this->load->library('form_validation');
+
+			$this->form_validation->set_rules('carrera_estado','Carrera Estado','required');
+			$this->form_validation->set_rules('descripcion','Descripcion','required');
+		
+			if($this->form_validation->run())     
             {   
                 $params = array(
+					'carrera_estado' => $this->input->post('carrera_estado'),
 					'descripcion' => $this->input->post('descripcion'),
                 );
 
@@ -71,8 +84,9 @@ class Carrera extends CI_Controller{
                 redirect('carrera/index');
             }
             else
-            {
-                $data['_view'] = 'carreras/edit';
+            {				$data['all_carreras'] = $this->Carrera_model->get_all_carreras();
+
+                $data['_view'] = 'carrera/edit';
                 $this->load->view('layouts/main',$data);
             }
         }

@@ -8,7 +8,7 @@ class Provincia extends CI_Controller{
     function __construct()
     {
         parent::__construct();
-        $this->load->model('Provincia_model');
+        $this->load->model('Provincias_model');
     } 
 
     /*
@@ -16,17 +16,9 @@ class Provincia extends CI_Controller{
      */
     function index()
     {
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+        $data['provincias'] = $this->Provincias_model->get_all_provincias();
         
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('provincia/index?');
-        $config['total_rows'] = $this->Provincia_model->get_all_provincias_count();
-        $this->pagination->initialize($config);
-
-        $data['provincias'] = $this->Provincia_model->get_all_provincias($params);
-        
-        $data['_view'] = 'provincias/index';
+        $data['_view'] = 'provincia/index';
         $this->load->view('layouts/main',$data);
     }
 
@@ -35,18 +27,22 @@ class Provincia extends CI_Controller{
      */
     function add()
     {   
-        if(isset($_POST) && count($_POST) > 0)     
+        $this->load->library('form_validation');
+
+		$this->form_validation->set_rules('descripcion','Descripcion','required|alpha');
+		
+		if($this->form_validation->run())     
         {   
             $params = array(
 				'descripcion' => $this->input->post('descripcion'),
             );
             
-            $provincia_id = $this->Provincia_model->add_provincia($params);
+            $provincia_id = $this->Provincias_model->add_provincia($params);
             redirect('provincia/index');
         }
         else
         {            
-            $data['_view'] = 'provincias/add';
+            $data['_view'] = 'provincia/add';
             $this->load->view('layouts/main',$data);
         }
     }  
@@ -57,22 +53,26 @@ class Provincia extends CI_Controller{
     function edit($id_provincia)
     {   
         // check if the provincia exists before trying to edit it
-        $data['provincia'] = $this->Provincia_model->get_provincia($id_provincia);
+        $data['provincia'] = $this->Provincias_model->get_provincia($id_provincia);
         
         if(isset($data['provincia']['id_provincia']))
         {
-            if(isset($_POST) && count($_POST) > 0)     
+            $this->load->library('form_validation');
+
+			$this->form_validation->set_rules('descripcion','Descripcion','required|alpha');
+		
+			if($this->form_validation->run())     
             {   
                 $params = array(
 					'descripcion' => $this->input->post('descripcion'),
                 );
 
-                $this->Provincia_model->update_provincia($id_provincia,$params);            
+                $this->Provincias_model->update_provincia($id_provincia,$params);            
                 redirect('provincia/index');
             }
             else
             {
-                $data['_view'] = 'provincias/edit';
+                $data['_view'] = 'provincia/edit';
                 $this->load->view('layouts/main',$data);
             }
         }
@@ -85,12 +85,12 @@ class Provincia extends CI_Controller{
      */
     function remove($id_provincia)
     {
-        $provincia = $this->Provincia_model->get_provincia($id_provincia);
+        $provincia = $this->Provincias_model->get_provincia($id_provincia);
 
         // check if the provincia exists before trying to delete it
         if(isset($provincia['id_provincia']))
         {
-            $this->Provincia_model->delete_provincia($id_provincia);
+            $this->Provincias_model->delete_provincia($id_provincia);
             redirect('provincia/index');
         }
         else

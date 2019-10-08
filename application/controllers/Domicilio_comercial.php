@@ -12,7 +12,7 @@ class Domicilio_comercial extends CI_Controller{
     } 
 
     /*
-     * Listing of domicilios_comerciales
+     * Listing of domicilio_comercial
      */
     function index()
     {
@@ -21,12 +21,12 @@ class Domicilio_comercial extends CI_Controller{
         
         $config = $this->config->item('pagination');
         $config['base_url'] = site_url('domicilio_comercial/index?');
-        $config['total_rows'] = $this->Domicilio_comercial_model->get_all_domicilios_comerciales_count();
+        $config['total_rows'] = $this->Domicilio_comercial_model->get_all_domicilio_comercial_count();
         $this->pagination->initialize($config);
 
-        $data['domicilios_comerciales'] = $this->Domicilio_comercial_model->get_all_domicilios_comerciales($params);
+        $data['domicilio_comercial'] = $this->Domicilio_comercial_model->get_all_domicilio_comercial($params);
         
-        $data['_view'] = 'domicilios_comerciales/index';
+        $data['_view'] = 'domicilio_comercial/index';
         $this->load->view('layouts/main',$data);
     }
 
@@ -35,9 +35,18 @@ class Domicilio_comercial extends CI_Controller{
      */
     function add()
     {   
-        if(isset($_POST) && count($_POST) > 0)     
+        $this->load->library('form_validation');
+
+		$this->form_validation->set_rules('dom_comer_estado','Dom Comer Estado','required');
+		$this->form_validation->set_rules('id_localidad','Id Localidad','required');
+		$this->form_validation->set_rules('id_provincia','Id Provincia','required');
+		$this->form_validation->set_rules('calle','Calle','required');
+		$this->form_validation->set_rules('numero','Numero','integer|required');
+		
+		if($this->form_validation->run())     
         {   
             $params = array(
+				'dom_comer_estado' => $this->input->post('dom_comer_estado'),
 				'id_localidad' => $this->input->post('id_localidad'),
 				'id_provincia' => $this->input->post('id_provincia'),
 				'calle' => $this->input->post('calle'),
@@ -49,13 +58,13 @@ class Domicilio_comercial extends CI_Controller{
         }
         else
         {
-			$this->load->model('Localidad_model');
-			$data['all_localidades'] = $this->Localidad_model->get_all_localidades();
+			$this->load->model('Localidades_model');
+			$data['all_localidades'] = $this->Localidades_model->get_all_localidades();
 
-			$this->load->model('Provincia_model');
-			$data['all_provincias'] = $this->Provincia_model->get_all_provincias();
+			$this->load->model('Provincias_model');
+			$data['all_provincias'] = $this->Provincias_model->get_all_provincias();
             
-            $data['_view'] = 'domicilios_comerciales/add';
+            $data['_view'] = 'domicilio_comercial/add';
             $this->load->view('layouts/main',$data);
         }
     }  
@@ -70,9 +79,18 @@ class Domicilio_comercial extends CI_Controller{
         
         if(isset($data['domicilio_comercial']['id_domicilio_comer']))
         {
-            if(isset($_POST) && count($_POST) > 0)     
+            $this->load->library('form_validation');
+
+			$this->form_validation->set_rules('dom_comer_estado','Dom Comer Estado','required');
+			$this->form_validation->set_rules('id_localidad','Id Localidad','required');
+			$this->form_validation->set_rules('id_provincia','Id Provincia','required');
+			$this->form_validation->set_rules('calle','Calle','required');
+			$this->form_validation->set_rules('numero','Numero','integer|required');
+		
+			if($this->form_validation->run())     
             {   
                 $params = array(
+					'dom_comer_estado' => $this->input->post('dom_comer_estado'),
 					'id_localidad' => $this->input->post('id_localidad'),
 					'id_provincia' => $this->input->post('id_provincia'),
 					'calle' => $this->input->post('calle'),
@@ -84,13 +102,13 @@ class Domicilio_comercial extends CI_Controller{
             }
             else
             {
-				$this->load->model('Localidad_model');
-				$data['all_localidades'] = $this->Localidad_model->get_all_localidades();
+				$this->load->model('Localidades_model');
+				$data['all_localidades'] = $this->Localidades_model->get_all_localidades();
 
-				$this->load->model('Provincia_model');
-				$data['all_provincias'] = $this->Provincia_model->get_all_provincias();
+				$this->load->model('Provincias_model');
+				$data['all_provincias'] = $this->Provincias_model->get_all_provincias();
 
-                $data['_view'] = 'domicilios_comerciales/edit';
+                $data['_view'] = 'domicilio_comercial/edit';
                 $this->load->view('layouts/main',$data);
             }
         }

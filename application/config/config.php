@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -22,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/CEEPA/';
+$config['base_url'] = 'http://localhost/ceepa//';
 
 /*
 |--------------------------------------------------------------------------
@@ -75,7 +76,7 @@ $config['url_suffix'] = '';
 | than english.
 |
 */
-$config['language']	= 'english';
+$config['language']	= 'spanish';
 
 /*
 |--------------------------------------------------------------------------

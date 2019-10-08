@@ -12,7 +12,7 @@ class Condicion_iva extends CI_Controller{
     } 
 
     /*
-     * Listing of condiciones_iva
+     * Listing of condicion_iva
      */
     function index()
     {
@@ -21,12 +21,12 @@ class Condicion_iva extends CI_Controller{
         
         $config = $this->config->item('pagination');
         $config['base_url'] = site_url('condicion_iva/index?');
-        $config['total_rows'] = $this->Condicion_iva_model->get_all_condiciones_iva_count();
+        $config['total_rows'] = $this->Condicion_iva_model->get_all_condicion_iva_count();
         $this->pagination->initialize($config);
 
-        $data['condiciones_iva'] = $this->Condicion_iva_model->get_all_condiciones_iva($params);
+        $data['condicion_iva'] = $this->Condicion_iva_model->get_all_condicion_iva($params);
         
-        $data['_view'] = 'condiciones_iva/index';
+        $data['_view'] = 'condicion_iva/index';
         $this->load->view('layouts/main',$data);
     }
 
@@ -35,7 +35,11 @@ class Condicion_iva extends CI_Controller{
      */
     function add()
     {   
-        if(isset($_POST) && count($_POST) > 0)     
+        $this->load->library('form_validation');
+
+		$this->form_validation->set_rules('descripcion','Descripcion','required');
+		
+		if($this->form_validation->run())     
         {   
             $params = array(
 				'descripcion' => $this->input->post('descripcion'),
@@ -46,7 +50,7 @@ class Condicion_iva extends CI_Controller{
         }
         else
         {            
-            $data['_view'] = 'condiciones_iva/add';
+            $data['_view'] = 'condicion_iva/add';
             $this->load->view('layouts/main',$data);
         }
     }  
@@ -61,7 +65,11 @@ class Condicion_iva extends CI_Controller{
         
         if(isset($data['condicion_iva']['id_cond_iva']))
         {
-            if(isset($_POST) && count($_POST) > 0)     
+            $this->load->library('form_validation');
+
+			$this->form_validation->set_rules('descripcion','Descripcion','required');
+		
+			if($this->form_validation->run())     
             {   
                 $params = array(
 					'descripcion' => $this->input->post('descripcion'),
@@ -72,7 +80,7 @@ class Condicion_iva extends CI_Controller{
             }
             else
             {
-                $data['_view'] = 'condiciones_iva/edit';
+                $data['_view'] = 'condicion_iva/edit';
                 $this->load->view('layouts/main',$data);
             }
         }

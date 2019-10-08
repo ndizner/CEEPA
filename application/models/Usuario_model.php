@@ -18,26 +18,13 @@ class Usuario_model extends CI_Model
     {
         return $this->db->get_where('usuarios',array('id_usuario'=>$id_usuario))->row_array();
     }
-    
-    /*
-     * Get all usuarios count
-     */
-    function get_all_usuarios_count()
-    {
-        $this->db->from('usuarios');
-        return $this->db->count_all_results();
-    }
         
     /*
      * Get all usuarios
      */
-    function get_all_usuarios($params = array())
+    function get_all_usuarios()
     {
         $this->db->order_by('id_usuario', 'desc');
-        if(isset($params) && !empty($params))
-        {
-            $this->db->limit($params['limit'], $params['offset']);
-        }
         return $this->db->get('usuarios')->result_array();
     }
         

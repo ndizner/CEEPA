@@ -20,18 +20,18 @@ class Condicion_iva_model extends CI_Model
     }
     
     /*
-     * Get all condiciones_iva count
+     * Get all condicion_iva count
      */
-    function get_all_condiciones_iva_count()
+    function get_all_condicion_iva_count()
     {
         $this->db->from('condicion_iva');
         return $this->db->count_all_results();
     }
         
     /*
-     * Get all condiciones_iva
+     * Get all condicion_iva
      */
-    function get_all_condiciones_iva($params = array())
+    function get_all_condicion_iva($params = array())
     {
         $this->db->order_by('id_cond_iva', 'desc');
         if(isset($params) && !empty($params))

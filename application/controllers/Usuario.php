@@ -16,17 +16,9 @@ class Usuario extends CI_Controller{
      */
     function index()
     {
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+        $data['usuarios'] = $this->Usuario_model->get_all_usuarios();
         
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('usuario/index?');
-        $config['total_rows'] = $this->Usuario_model->get_all_usuarios_count();
-        $this->pagination->initialize($config);
-
-        $data['usuarios'] = $this->Usuario_model->get_all_usuarios($params);
-        
-        $data['_view'] = 'usuarios/index';
+        $data['_view'] = 'usuario/index';
         $this->load->view('layouts/main',$data);
     }
 
@@ -35,16 +27,11 @@ class Usuario extends CI_Controller{
      */
     function add()
     {   
-        $this->load->library('form_validation');
-
-		$this->form_validation->set_rules('password','Password','required|min_length[6]|alpha_numeric');
-		$this->form_validation->set_rules('nombre','Nombre','required|min_length[6]');
-		
-		if($this->form_validation->run())     
+        if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
+				'usuario_estado' => $this->input->post('usuario_estado'),
 				'id_tipo_usuario' => $this->input->post('id_tipo_usuario'),
-				'id_estado_usuario' => $this->input->post('id_estado_usuario'),
 				'password' => $this->input->post('password'),
 				'nombre' => $this->input->post('nombre'),
             );
@@ -55,12 +42,9 @@ class Usuario extends CI_Controller{
         else
         {
 			$this->load->model('Tipo_usuario_model');
-			$data['all_tipo_usuarios'] = $this->Tipo_usuario_model->get_all_tipo_usuarios();
-
-			$this->load->model('Estado_usuario_model');
-			$data['all_estados_usuario'] = $this->Estado_usuario_model->get_all_estados_usuario();
+			$data['all_tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario();
             
-            $data['_view'] = 'usuarios/add';
+            $data['_view'] = 'usuario/add';
             $this->load->view('layouts/main',$data);
         }
     }  
@@ -75,16 +59,11 @@ class Usuario extends CI_Controller{
         
         if(isset($data['usuario']['id_usuario']))
         {
-            $this->load->library('form_validation');
-
-			$this->form_validation->set_rules('password','Password','required|min_length[6]|alpha_numeric');
-			$this->form_validation->set_rules('nombre','Nombre','required|min_length[6]');
-		
-			if($this->form_validation->run())     
+            if(isset($_POST) && count($_POST) > 0)     
             {   
                 $params = array(
+					'usuario_estado' => $this->input->post('usuario_estado'),
 					'id_tipo_usuario' => $this->input->post('id_tipo_usuario'),
-					'id_estado_usuario' => $this->input->post('id_estado_usuario'),
 					'password' => $this->input->post('password'),
 					'nombre' => $this->input->post('nombre'),
                 );
@@ -95,12 +74,9 @@ class Usuario extends CI_Controller{
             else
             {
 				$this->load->model('Tipo_usuario_model');
-				$data['all_tipo_usuarios'] = $this->Tipo_usuario_model->get_all_tipo_usuarios();
+				$data['all_tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario();
 
-				$this->load->model('Estado_usuario_model');
-				$data['all_estados_usuario'] = $this->Estado_usuario_model->get_all_estados_usuario();
-
-                $data['_view'] = 'usuarios/edit';
+                $data['_view'] = 'usuario/edit';
                 $this->load->view('layouts/main',$data);
             }
         }

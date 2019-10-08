@@ -35,9 +35,24 @@ class Venta extends CI_Controller{
      */
     function add()
     {   
-        if(isset($_POST) && count($_POST) > 0)     
+        $this->load->library('form_validation');
+
+		$this->form_validation->set_rules('venta_estado','Venta Estado','required');
+		$this->form_validation->set_rules('id_condicion_venta','Id Condicion Venta','required');
+		$this->form_validation->set_rules('id_cond_iva','Id Cond Iva','required');
+		$this->form_validation->set_rules('id_domicilio_comercial','Id Domicilio Comercial','required');
+		$this->form_validation->set_rules('fecha_operacion','Fecha Operacion','required');
+		$this->form_validation->set_rules('tipo_doc','Tipo Doc','required');
+		$this->form_validation->set_rules('num_documento','Num Documento','required');
+		$this->form_validation->set_rules('razon_soc','Razon Soc','required');
+		$this->form_validation->set_rules('email','Email','required|valid_email');
+		$this->form_validation->set_rules('prod_servicio','Prod Servicio','required|alpha');
+		$this->form_validation->set_rules('precio_unitario','Precio Unitario','required|decimal');
+		
+		if($this->form_validation->run())     
         {   
             $params = array(
+				'venta_estado' => $this->input->post('venta_estado'),
 				'id_condicion_venta' => $this->input->post('id_condicion_venta'),
 				'id_cond_iva' => $this->input->post('id_cond_iva'),
 				'id_domicilio_comercial' => $this->input->post('id_domicilio_comercial'),
@@ -55,14 +70,14 @@ class Venta extends CI_Controller{
         }
         else
         {
-			$this->load->model('Condicion_venta_model');
-			$data['all_condiciones_venta'] = $this->Condicion_venta_model->get_all_condiciones_venta();
+			$this->load->model('Condicion_ventum_model');
+			$data['all_condicion_venta'] = $this->Condicion_ventum_model->get_all_condicion_venta();
 
 			$this->load->model('Condicion_iva_model');
-			$data['all_condiciones_iva'] = $this->Condicion_iva_model->get_all_condiciones_iva();
+			$data['all_condicion_iva'] = $this->Condicion_iva_model->get_all_condicion_iva();
 
 			$this->load->model('Domicilio_comercial_model');
-			$data['all_domicilios_comerciales'] = $this->Domicilio_comercial_model->get_all_domicilios_comerciales();
+			$data['all_domicilio_comercial'] = $this->Domicilio_comercial_model->get_all_domicilio_comercial();
             
             $data['_view'] = 'venta/add';
             $this->load->view('layouts/main',$data);
@@ -79,9 +94,24 @@ class Venta extends CI_Controller{
         
         if(isset($data['venta']['id_ventas']))
         {
-            if(isset($_POST) && count($_POST) > 0)     
+            $this->load->library('form_validation');
+
+			$this->form_validation->set_rules('venta_estado','Venta Estado','required');
+			$this->form_validation->set_rules('id_condicion_venta','Id Condicion Venta','required');
+			$this->form_validation->set_rules('id_cond_iva','Id Cond Iva','required');
+			$this->form_validation->set_rules('id_domicilio_comercial','Id Domicilio Comercial','required');
+			$this->form_validation->set_rules('fecha_operacion','Fecha Operacion','required');
+			$this->form_validation->set_rules('tipo_doc','Tipo Doc','required');
+			$this->form_validation->set_rules('num_documento','Num Documento','required');
+			$this->form_validation->set_rules('razon_soc','Razon Soc','required');
+			$this->form_validation->set_rules('email','Email','required|valid_email');
+			$this->form_validation->set_rules('prod_servicio','Prod Servicio','required|alpha');
+			$this->form_validation->set_rules('precio_unitario','Precio Unitario','required|decimal');
+		
+			if($this->form_validation->run())     
             {   
                 $params = array(
+					'venta_estado' => $this->input->post('venta_estado'),
 					'id_condicion_venta' => $this->input->post('id_condicion_venta'),
 					'id_cond_iva' => $this->input->post('id_cond_iva'),
 					'id_domicilio_comercial' => $this->input->post('id_domicilio_comercial'),
@@ -99,14 +129,14 @@ class Venta extends CI_Controller{
             }
             else
             {
-				$this->load->model('Condicion_venta_model');
-				$data['all_condiciones_venta'] = $this->Condicion_venta_model->get_all_condiciones_venta();
+				$this->load->model('Condicion_ventum_model');
+				$data['all_condicion_venta'] = $this->Condicion_ventum_model->get_all_condicion_venta();
 
 				$this->load->model('Condicion_iva_model');
-				$data['all_condiciones_iva'] = $this->Condicion_iva_model->get_all_condiciones_iva();
+				$data['all_condicion_iva'] = $this->Condicion_iva_model->get_all_condicion_iva();
 
 				$this->load->model('Domicilio_comercial_model');
-				$data['all_domicilios_comerciales'] = $this->Domicilio_comercial_model->get_all_domicilios_comerciales();
+				$data['all_domicilio_comercial'] = $this->Domicilio_comercial_model->get_all_domicilio_comercial();
 
                 $data['_view'] = 'venta/edit';
                 $this->load->view('layouts/main',$data);

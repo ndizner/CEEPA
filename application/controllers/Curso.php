@@ -26,7 +26,7 @@ class Curso extends CI_Controller{
 
         $data['cursos'] = $this->Curso_model->get_all_cursos($params);
         
-        $data['_view'] = 'cursos/index';
+        $data['_view'] = 'curso/index';
         $this->load->view('layouts/main',$data);
     }
 
@@ -37,25 +37,16 @@ class Curso extends CI_Controller{
     {   
         $this->load->library('form_validation');
 
+		$this->form_validation->set_rules('curso_estado','Curso Estado','required');
+		$this->form_validation->set_rules('id_profesor','Id Profesor','required');
 		$this->form_validation->set_rules('descripcion','Descripcion','required');
-		$this->form_validation->set_rules('cant_alumnos','Cant Alumnos','required');
-		$this->form_validation->set_rules('duracion_dias','Duracion Dias','required');
-		$this->form_validation->set_rules('horario_inicio','Horario Inicio','required');
-		$this->form_validation->set_rules('horario_fin','Horario Fin','required');
-		$this->form_validation->set_rules('dia_cursada','Dia Cursada','required');
-		$this->form_validation->set_rules('turno','Turno','required');
 		
 		if($this->form_validation->run())     
         {   
             $params = array(
+				'curso_estado' => $this->input->post('curso_estado'),
 				'id_profesor' => $this->input->post('id_profesor'),
 				'descripcion' => $this->input->post('descripcion'),
-				'cant_alumnos' => $this->input->post('cant_alumnos'),
-				'duracion_dias' => $this->input->post('duracion_dias'),
-				'horario_inicio' => $this->input->post('horario_inicio'),
-				'horario_fin' => $this->input->post('horario_fin'),
-				'dia_cursada' => $this->input->post('dia_cursada'),
-				'turno' => $this->input->post('turno'),
             );
             
             $curso_id = $this->Curso_model->add_curso($params);
@@ -63,10 +54,10 @@ class Curso extends CI_Controller{
         }
         else
         {
-			$this->load->model('Profesor_model');
-			$data['all_profesores'] = $this->Profesor_model->get_all_profesores();
+			$this->load->model('Profesores_model');
+			$data['all_profesores'] = $this->Profesores_model->get_all_profesores();
             
-            $data['_view'] = 'cursos/add';
+            $data['_view'] = 'curso/add';
             $this->load->view('layouts/main',$data);
         }
     }  
@@ -83,25 +74,16 @@ class Curso extends CI_Controller{
         {
             $this->load->library('form_validation');
 
+			$this->form_validation->set_rules('curso_estado','Curso Estado','required');
+			$this->form_validation->set_rules('id_profesor','Id Profesor','required');
 			$this->form_validation->set_rules('descripcion','Descripcion','required');
-			$this->form_validation->set_rules('cant_alumnos','Cant Alumnos','required');
-			$this->form_validation->set_rules('duracion_dias','Duracion Dias','required');
-			$this->form_validation->set_rules('horario_inicio','Horario Inicio','required');
-			$this->form_validation->set_rules('horario_fin','Horario Fin','required');
-			$this->form_validation->set_rules('dia_cursada','Dia Cursada','required');
-			$this->form_validation->set_rules('turno','Turno','required');
 		
 			if($this->form_validation->run())     
             {   
                 $params = array(
+					'curso_estado' => $this->input->post('curso_estado'),
 					'id_profesor' => $this->input->post('id_profesor'),
 					'descripcion' => $this->input->post('descripcion'),
-					'cant_alumnos' => $this->input->post('cant_alumnos'),
-					'duracion_dias' => $this->input->post('duracion_dias'),
-					'horario_inicio' => $this->input->post('horario_inicio'),
-					'horario_fin' => $this->input->post('horario_fin'),
-					'dia_cursada' => $this->input->post('dia_cursada'),
-					'turno' => $this->input->post('turno'),
                 );
 
                 $this->Curso_model->update_curso($id_cursos,$params);            
@@ -109,10 +91,10 @@ class Curso extends CI_Controller{
             }
             else
             {
-				$this->load->model('Profesor_model');
-				$data['all_profesores'] = $this->Profesor_model->get_all_profesores();
+				$this->load->model('Profesores_model');
+				$data['all_profesores'] = $this->Profesores_model->get_all_profesores();
 
-                $data['_view'] = 'cursos/edit';
+                $data['_view'] = 'curso/edit';
                 $this->load->view('layouts/main',$data);
             }
         }
